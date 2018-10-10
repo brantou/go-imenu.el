@@ -1,0 +1,55 @@
+#+TITLE: go-imenu.el
+
+* Introduction
+  :PROPERTIES:
+  :ID:       DE46A955-F481-47FC-BA02-77DEAB49BA63
+  :END:
+  imenu for go language!
+
+* Dependency
+  :PROPERTIES:
+  :ID:       DE26A168-2425-4626-A658-BBE5FFE58680
+  :END:
+
+  #+BEGIN_SRC shell
+    go get -u github.com/lukehoban/go-outline
+  #+END_SRC
+
+* Installation
+  :PROPERTIES:
+  :ID:       308CCDB0-EFBD-4E67-982C-D3B4458E8B91
+  :END:
+
+  Available on all major ~package.el~ community maintained repos -
+  [[https://stable.melpa.org/#/][MELPA Stable]] and [[https://melpa.org/#/][MELPA]] repos.
+
+  MELPA Stable is recommended as it has the latest stable version.
+  MELPA has a development snapshot for users who don't mind breakage but
+  don't want to run from a git checkout.
+
+  You can install ~go-imenu~ using the following command:
+
+  ~M-x package-install [RET] go-imenu [RET]~
+
+  or if you'd rather keep it in your dotfiles:
+
+  #+BEGIN_SRC elisp
+  (unless (package-installed-p 'go-imenu)
+    (package-refresh-contents)
+    (package-install 'go-imenu))
+  #+END_SRC
+
+  If the installation doesn't work try refreshing the package list:
+
+  ~M-x package-refresh-contents~
+
+* Setup
+  :PROPERTIES:
+  :ID:       98BB72C0-8873-471D-963C-06D7206DA178
+  :END:
+
+  Call go-imenu-setup function at go-mode-hook
+  #+BEGIN_SRC elisp
+  (require 'go-imenu) ;; Don't need to require, if you install by package.el
+  (add-hook 'go-mode-hook 'go-imenu-setup)
+  #+END_SRC
