@@ -50,10 +50,10 @@ from https://github.com/lukehoban/go-outline."
   :group 'go-imenu)
 
 (defcustom go-imenu-generic-expression
-  "imenu-generic-expression"
   '(("type" "^type *\\([^ \t\n\r\f]*\\)" 1)
     ("func" "^func *\\(.*\\) {" 1))
-  :type 'regexp
+  "imenu-generic-expression"
+  :type '(alist :value-type (group regexp integer))
   :group 'go-imenu)
 
 (defcustom go-imenu-import-p nil
