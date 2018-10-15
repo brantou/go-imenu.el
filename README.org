@@ -1,4 +1,7 @@
 #+TITLE: go-imenu.el
+[[http://www.gnu.org/licenses/gpl-3.0.html][file:https://img.shields.io/badge/license-GPL_v3-green.svg]]
+[[https://melpa.org/#/go-imenu][file:https://melpa.org/packages/go-imenu-badge.svg]]
+[[https://stable.melpa.org/#/go-imenu][file:https://stable.melpa.org/packages/go-imenu-badge.svg]]
 
 * Introduction
   :PROPERTIES:
