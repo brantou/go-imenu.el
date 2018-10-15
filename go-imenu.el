@@ -1,4 +1,4 @@
-;;; go-imenu.el --- imenu for go language -*- lexical-binding: t; -*-
+;;; go-imenu.el --- Imenu for go language -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2018 Brantou
 
@@ -34,10 +34,13 @@
 ;;
 
 ;;; Code:
-(require 'json)
 
 (defgroup go-imenu nil
-  "Options specific to the Go imenu."
+  "Imenu for go language."
+  :prefix "go-imenu-"
+  :link '(url-link :tag "MELPA" "https://melpa.org/#/go-imenu")
+  :link '(url-link :tag "MELPA Stable" "https://stable.melpa.org/#/go-imenu")
+  :link '(url-link :tag "GitHub" "https://github.com/brantou/go-imenu.el")
   :group 'go)
 
 (defcustom go-imenu-command "go-outline"
@@ -47,10 +50,15 @@ from https://github.com/lukehoban/go-outline."
   :group 'go-imenu)
 
 (defcustom go-imenu-generic-expression
+  "imenu-generic-expression"
   '(("type" "^type *\\([^ \t\n\r\f]*\\)" 1)
     ("func" "^func *\\(.*\\) {" 1))
-  "Imenu-generic-expression."
-  :type 'list
+  :type 'regexp
+  :group 'go-imenu)
+
+(defcustom go-imenu-import-p nil
+  "Export import."
+  :type 'boolean
   :group 'go-imenu)
 
 (defun go-imenu-create-index ()
@@ -65,16 +73,14 @@ from https://github.com/lukehoban/go-outline."
 (defun go-imenu--create-index()
   "Create an imenu index of all methods in the buffer."
   (let ((fname (or
-             (and (file-exists-p buffer-file-name) buffer-file-name)
+             (and buffer-file-name (file-exists-p buffer-file-name) buffer-file-name)
+             ;; This line will break because (file-exists-p nil) throws an error.
              (make-temp-file "Go-Imenu" nil ".go")))
         (outbuf (get-buffer-create "*Go-Imenu*"))
         (coding-system-for-read 'utf-8)
         (coding-system-for-write 'utf-8)
-        (index-alist '())
-        (index-var-alist '())
-        (index-type-alist '())
-        (index-import-alist '())
-        (index-unknown-alist '())
+        index-alist index-var-alist index-type-alist
+        index-import-alist index-unknown-alist
         cmd-args)
     (unwind-protect
         (save-restriction
@@ -104,17 +110,12 @@ from https://github.com/lukehoban/go-outline."
                                                         "->" label)
                                                      (concat receiverType "::" label))
                                                  label)))
-                              (cond
-                               ((string= "function" type)
-                                (push (cons index-name pos) index-alist))
-                               ((string= "variable" type)
-                                (push (cons index-name pos) index-var-alist))
-                               ((string= "type" type)
-                                (push (cons index-name pos) index-type-alist))
-                               ((string= "import" type)
-                                (push (cons index-name pos) index-import-alist))
-                               (t
-                                (push (cons index-name pos) index-unknown-alist)))))
+                              (pcase type
+                                ("function" (push (cons index-name pos) index-alist))
+                                ("variable" (push (cons index-name pos) index-var-alist))
+                                ("type" (push (cons index-name pos) index-type-alist))
+                                ("import" (push (cons index-name pos) index-import-alist))
+                                (_ (push (cons index-name pos) index-unknown-alist)))))
                           childrens)
                   ))
             (message "Could not apply go-imenu")
@@ -126,13 +127,13 @@ from https://github.com/lukehoban/go-outline."
     (unless (file-exists-p buffer-file-name)
       (delete-file fname))
     (setq index-alist (reverse index-alist))
-    (and index-var-alist
+    (when index-var-alist
          (push (cons "Variables" (reverse index-var-alist)) index-alist))
-    (and index-type-alist
+    (when index-type-alist
          (push (cons "Types" (reverse index-type-alist)) index-alist))
-    ;;(and index-import-alist
-    ;;     (push (cons "Import" index-import-alist) index-alist))
-    (and index-unknown-alist
+    (when (and go-imenu-import-p index-import-alist)
+         (push (cons "Import" index-import-alist) index-alist))
+    (when index-unknown-alist
          (push (cons "Syntax-unknown" (reverse index-unknown-alist)) index-alist))
     index-alist))
 
