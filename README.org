@@ -9,6 +9,7 @@
   :END:
   imenu for go language!
   go-mode.el use elisp, base [[https://github.com/dominikh/go-mode.el/blob/120fb911f1d8038f828da85eed8aaad977dabd8c/go-mode.el#L990][regex]].
+  
   go-imenu.el use go, base  go's package([[https://github.com/lukehoban/go-outline/blob/e785568742524aa488d7332e7619dba87b2a8b9d/main.go#L8][ast/parse/token/format]]).
   
   #+BEGIN_EXAMPLE
