@@ -7,6 +7,7 @@
   :PROPERTIES:
   :ID:       DE46A955-F481-47FC-BA02-77DEAB49BA63
   :END:
+  
   Imenu for go language!
   
   go-mode.el use elisp, base [[https://github.com/dominikh/go-mode.el/blob/120fb911f1d8038f828da85eed8aaad977dabd8c/go-mode.el#L990][regex]].
