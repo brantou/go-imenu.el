@@ -1,4 +1,4 @@
-;;; go-imenu.el --- Imenu for go language -*- lexical-binding: t; -*-
+;;; go-imenu.el --- Enhance imenu for go language -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2018 Brantou
 
@@ -25,7 +25,7 @@
 
 ;;; Commentary:
 ;;
-;; `go-imenu.el' provides imenu for Go language.
+;; `go-imenu.el' enhance imenu support, which is better than the basic version provided by go-mode.el.
 ;;
 
 ;;; Requirements:
